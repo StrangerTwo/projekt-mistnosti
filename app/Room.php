@@ -10,5 +10,11 @@ class Room extends Model
     
     protected $fillable = ['no', 'name', 'phone'];
 
-    protected $primaryKey = 'room_id'; 
+    protected $primaryKey = 'room_id';
+
+    public function users()
+    {
+        return User::where('room', $this->room_id)->get();
+        // return $this->hasMany(User::class, 'room', 'room_id');
+    }
 }

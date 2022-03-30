@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +17,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('/employee', UserController::class);
+Route::resource('/room', RoomController::class);
 
 Auth::routes();
 
