@@ -18,8 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/employee', UserController::class);
-Route::resource('/room', RoomController::class);
+Route::resource('/employee', UserController::class)->middleware('auth');
+Route::resource('/room', RoomController::class)->middleware('auth');
 
 Auth::routes();
 

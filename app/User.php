@@ -11,6 +11,9 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    const UPDATED_AT = null;
+    const CREATED_AT = null;
+
     protected $table = 'employee';
 
     /**
@@ -19,10 +22,23 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'job', 'wage',
+        'name', 'surname', 'job', 'wage', 'login', 'password'
+    ];
+
+    protected $hidden = [
+        'password',
     ];
 
     protected $primaryKey = 'employee_id';
+
+    public function getEmailAttribute() {
+        return $this->login;
+    }
+  
+    public function setEmailAttribute($value)
+    {
+      $this->attributes['login'] = strtolower($value);
+    }
 
     public function room()
     {

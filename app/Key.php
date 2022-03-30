@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Key extends Model
 {
+    const UPDATED_AT = null;
+    const CREATED_AT = null;
 
     protected $table = 'key';
 

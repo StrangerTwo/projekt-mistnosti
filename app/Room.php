@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
 {
+    const UPDATED_AT = null;
+    const CREATED_AT = null;
+
     protected $table = 'room';
     
     protected $fillable = ['no', 'name', 'phone'];
