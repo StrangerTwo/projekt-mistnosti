@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class RoomController extends Controller
 {
@@ -20,7 +22,10 @@ class RoomController extends Controller
             $room->users = $room->users();
         }
 
-        return $rooms;
+        return view('room.index', [
+            'rooms' => $rooms,
+            'user' => Auth::user()
+        ]);
     }
 
     /**
@@ -30,7 +35,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        //
+        return view('room.create');
     }
 
     /**
@@ -41,7 +46,21 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'no' => ['required', 'numeric', 'unique:room'],
+            'name' => ['required', 'string', 'max:255'],
+            'phone' => ['string', 'max:15'],
+        ]);
+        
+        $room = new Room([
+            'no' => $request->get('no'),
+            'name' => $request->get('name'),
+            'phone' => $request->get('phone'),
+        ]);
+
+        $room->save();
+
+        return redirect(route('room.show', $room->id));
     }
 
     /**
@@ -52,7 +71,11 @@ class RoomController extends Controller
      */
     public function show($id)
     {
-        //
+        $room = Room::find($id);
+
+        return view('room.show', [
+            'room' => $room,
+        ]);
     }
 
     /**
@@ -63,7 +86,11 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
-        //
+        $room = Room::find($id);
+
+        return view('room.edit', [
+            'room' => $room,
+        ]);
     }
 
     /**
@@ -75,7 +102,23 @@ class RoomController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $room = Room::find($id);
+
+        if (!$room) return redirect(route('room.index'));
+
+        $request->validate([
+            'no' => ['required', 'numeric', "unique:room,no,$room->room_id,room_id"],
+            'name' => ['required', 'string', 'max:255'],
+            'phone' => ['string', 'max:15'],
+        ]);
+
+        $room->update([
+            'no' => $request->get('no'),
+            'name' => $request->get('name'),
+            'phone' => $request->get('phone'),
+        ]);
+
+        return redirect()->back();
     }
 
     /**
@@ -86,6 +129,9 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $room = Room::find($id);
+        if($room) $room->delete();
+
+        return redirect(route('room.index'));
     }
 }
