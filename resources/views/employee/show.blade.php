@@ -43,6 +43,12 @@
                 <dt class="col-sm-3">{{ __('Login') }}</dt>
                 <dd class="col-sm-9">{{ $employee->login }}</dd>
             </dl>
+            <h3>{{ __('Keys') }}</h3>
+            <ul>
+                @foreach ($employee->keys as $key)
+                    <li><a href="{{ route('room.show', $key->room_id) }}">{{ $key->name }}</a></li>
+                @endforeach
+            </ul>
         </div>
     </div>
 </div>

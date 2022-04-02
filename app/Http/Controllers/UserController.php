@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Key;
 use App\Room;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -69,9 +69,9 @@ class UserController extends Controller
             'surname' => ['required', 'string', 'max:255'],
             'job' => ['string', 'max:255'],
             'wage' => ['numeric', 'digits_between:1,11'],
-            'room' => ['nullable, exists:room,room_id'],
-            'login' => ['nullable', 'string', 'max:60', "unique:employee,login", 'required_with:password'],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'room' => $request->get('room') ? ['exists:room,room_id'] : [],
+            'login' => $request->get('login') ? ['string', 'max:60', "unique:employee,login", 'required_with:password'] : [],
+            'password' => $request->get('password') ? ['string', 'min:8', 'confirmed'] : [],
         ]);
 
         $employee = new User([
@@ -100,6 +100,7 @@ class UserController extends Controller
         $employee = User::find($id);
 
         $employee->room = $employee->room();
+        $employee->keys = $employee->keys();
 
         return view('employee.show', [
             'user' => $user,
@@ -120,6 +121,8 @@ class UserController extends Controller
         if (!$user->admin) return redirect()->back();
 
         $employee = User::find($id);
+
+        $employee->keys = $employee->keys()->all();
 
         $rooms = [];
         foreach (Room::all() as $room) {
@@ -147,8 +150,9 @@ class UserController extends Controller
         if (!$employee || !$user->admin && $employee->employee_id != $user->employee_id) return redirect()->back();
 
         $request->validate([
-            'login' => ['nullable', 'string', 'max:60', "unique:employee,login,$employee->employee_id,employee_id", 'required_with:password'],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'login' => $request->get('login') ? ['string', 'max:60', "unique:employee,login,$employee->employee_id,employee_id", 'required_with:password'] : [],
+            'password' => $request->get('password') ? ['string', 'min:8', 'confirmed'] : [],
+            'keys' => ['required', 'array', 'exists:room,room_id']
         ]);
 
         if ($request->get('login') && $request->get('password')) {
@@ -162,7 +166,7 @@ class UserController extends Controller
                 'surname' => ['required', 'string', 'max:255'],
                 'job' => ['string', 'max:255'],
                 'wage' => ['numeric', 'digits_between:1,11'],
-                'room' => ['nullable, exists:room,room_id'],
+                'room' => $request->get('room') ? ['exists:room,room_id'] : [],
             ]);
 
             $employee->name = $request->get('name');
@@ -175,6 +179,16 @@ class UserController extends Controller
                 $employee->admin = $request->has('admin');
             }
         }
+
+        Key::where('employee', $id)->delete();
+        $keys = [];
+        foreach ($request->get('keys') as $key) {
+            array_push($keys, [
+                'employee' => $employee->employee_id,
+                'room' => $key
+            ]);
+        }
+        Key::insert($keys);
 
         $employee->save();
 

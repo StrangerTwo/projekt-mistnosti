@@ -46,7 +46,7 @@
                 <div class="form-group row">
                     {{ Form::label('wage', __('Wage'), array('class' => 'col-sm-2 col-form-label')) }}
                     <div class="col-sm-10">
-                        <input id="wage" type="number" class="form-control @error('wage') is-invalid @enderror" name="wage" value="{{ old('wage') }}">
+                        <input id="wage" type="number" class="form-control @error('wage') is-invalid @enderror" name="wage" value="{{ old('wage', 0) }}">
 
                         @error('wage')
                             <span class="invalid-feedback" role="alert">

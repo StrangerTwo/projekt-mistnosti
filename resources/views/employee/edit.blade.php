@@ -116,6 +116,19 @@
                         @enderror
                     </div>
                 </div>
+                <legend class="my-3">{{ __('Keys') }}:</legend>
+                <div class="form-group row">
+                    @foreach ($rooms as $room_id => $room)
+                        <input type="checkbox" value="{{ $room_id }}" class="form-control col-sm-1 @error('keys') is-invalid @enderror" id="keys[{{$room_id}}]" name="keys[{{$room_id}}]" @if (in_array($room_id, array_column($employee->keys, 'room_id'))) checked @endif/>
+                        {{ Form::label("keys[$room_id]", $room, array('class' => 'col-sm-3 col-form-label')) }}
+                    @endforeach
+
+                    @error('keys')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
                 <button type="submit" class="btn btn-primary d-block float-right">{{ __('Save') }}</button>
             {{ Form::close() }}
         </div>
