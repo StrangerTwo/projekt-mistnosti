@@ -10,7 +10,9 @@
                 <div class="card-body">
                     @if(Session::get('errors')||count( $errors ) > 0)
                         @foreach ($errors->all() as $error)
-                            <h1>{{ $error }}</h1>
+                            <div class="alert alert-danger" role="alert">
+                                {{ $error }}
+                            </div>
                         @endforeach
                     @endif
                     <form method="POST" action="{{ route('login') }}">

@@ -35,6 +35,10 @@ class RoomController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+
+        if (!$user->admin) return redirect()->back();
+
         return view('room.create');
     }
 
@@ -46,6 +50,10 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
+
+        if (!$user->admin) return redirect()->back();
+
         $request->validate([
             'no' => ['required', 'numeric', 'unique:room'],
             'name' => ['required', 'string', 'max:255'],
@@ -86,6 +94,10 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
+        $user = Auth::user();
+
+        if (!$user->admin) return redirect()->back();
+
         $room = Room::find($id);
 
         return view('room.edit', [
@@ -102,6 +114,10 @@ class RoomController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = Auth::user();
+
+        if (!$user->admin) return redirect()->back();
+
         $room = Room::find($id);
 
         if (!$room) return redirect(route('room.index'));
@@ -129,6 +145,10 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
+        $user = Auth::user();
+
+        if (!$user->admin) return redirect()->back();
+        
         $room = Room::find($id);
         if($room) $room->delete();
 

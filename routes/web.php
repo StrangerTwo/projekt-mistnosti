@@ -21,6 +21,6 @@ Route::get('/', function () {
 Route::resource('/employee', UserController::class)->middleware('auth');
 Route::resource('/room', RoomController::class)->middleware('auth');
 
-Auth::routes();
+Auth::routes(['password.request' => false, 'reset' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
