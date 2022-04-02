@@ -12,6 +12,13 @@
                     </a>
                 @endif
             </div>
+            @if(Session::get('errors')||count( $errors ) > 0)
+                @foreach ($errors->all() as $error)
+                    <div class="alert alert-danger" role="alert">
+                        {{ $error }}
+                    </div>
+                @endforeach
+            @endif
             <dl class="row my-5">
                 <dt class="col-sm-3">{{ __('Name') }}</dt>
                 <dd class="col-sm-9">{{ $employee->name }}</dd>

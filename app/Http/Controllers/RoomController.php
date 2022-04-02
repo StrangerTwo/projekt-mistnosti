@@ -148,9 +148,19 @@ class RoomController extends Controller
         $user = Auth::user();
 
         if (!$user->admin) return redirect()->back();
-        
+
         $room = Room::find($id);
-        if($room) $room->delete();
+        if(!$room) return redirect(route('room.index'));
+        
+        try {
+            $room->delete();
+        } catch (\Throwable $th) {
+            if ($th instanceof \Illuminate\Database\QueryException) {
+                return redirect()->back()->withErrors(['error' => 'Nelze smazat, dokud je k místnosti přizazen nějaký zaměstnanec']);
+            }
+            throw $th;
+        }
+        
 
         return redirect(route('room.index'));
     }
