@@ -90,8 +90,8 @@
                     <span class="badge badge-light">test-user</span>
                     <span class="badge badge-dark">pass1234</span>
                 </div>
-                <div class="alert alert-info" role="alert">
-                    Pro testovací admin přihlášení použíjte login
+                <div class="alert alert-danger" role="alert">
+                    Pro testovací <strong style="font-weight: bold !important;">admin</strong> přihlášení použíjte login
                     <span class="badge badge-light">test-admin-user</span>
                     <span class="badge badge-dark">pass1234</span>
                 </div>
