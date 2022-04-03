@@ -59,7 +59,7 @@
                     {{ Form::label('room', __('Room'), array('class' => 'col-sm-2 col-form-label')) }}
                     <div class="col-sm-10">
                         {{-- {{ Form::select('room',  $rooms, null, ['class' => 'form-control']) }} --}}
-                        {{ Form::select('room', [null=>''] + $rooms, null, ['class' => "form-control " . ($errors->has('room') ? 'is-invalid' : '')]) }}
+                        {{ Form::select('room', [null=>''] + $rooms, old('room'), ['class' => "form-control " . ($errors->has('room') ? 'is-invalid' : '')]) }}
                         @error('room')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

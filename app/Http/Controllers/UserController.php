@@ -80,10 +80,10 @@ class UserController extends Controller
             'surname' => $request->get('surname'),
             'job' => $request->get('job'),
             'wage' => $request->get('wage'),
-            'room' => $request->get('room'),
             'login' => $request->get('login'),
             'password' => $request->get('password'),
         ]);
+        $employee->room = $request->get('room');
         $employee->save();
 
         return redirect(route('employee.show', $employee->employee_id));
@@ -206,6 +206,15 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = Auth::user();
+
+        if (!$user->admin) return redirect()->back();
+
+        $user = User::find($id);
+        if(!$user) return redirect(route('employee.index'));
+        
+        $user->delete();
+
+        return redirect(route('employee.index'));
     }
 }
