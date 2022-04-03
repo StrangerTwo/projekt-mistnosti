@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -55,6 +56,15 @@ class RegisterController extends Controller
             'login' => ['required', 'string', 'max:255', 'unique:employee'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
+    }
+
+    public function register(Request $request) {
+        $validator = $this->validator($request->all());
+        if ($validator->fails()) {
+            return redirect('/register')->withErrors($validator);
+        }
+    
+        return parent::register($request);
     }
 
     /**
