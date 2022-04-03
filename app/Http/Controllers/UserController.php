@@ -157,7 +157,7 @@ class UserController extends Controller
         ]);
 
         if ($request->get('login') && $request->get('password')) {
-            if ($request->get('login') == "test-user") return redirect()->back()->withErrors(['msg' => 'Heslo testovacího uživatele nelze změnit -_-']);
+            if ($request->get('login') == "test-user") return redirect(route('home'))->withErrors(['msg' => 'Heslo testovacího uživatele nelze změnit -_-']);
             $employee->login = $request->get('login');
             $employee->password = Hash::make($request->get('password'));
         }
