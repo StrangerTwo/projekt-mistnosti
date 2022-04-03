@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Počítač: 127.0.0.1
--- Vytvořeno: Ned 03. dub 2022, 14:15
+-- Vytvořeno: Ned 03. dub 2022, 20:14
 -- Verze serveru: 10.4.17-MariaDB
 -- Verze PHP: 7.4.28
 
@@ -55,10 +55,12 @@ INSERT INTO `employee` (`employee_id`, `name`, `surname`, `job`, `wage`, `room`,
 (9, 'Alena', 'Krátká', 'technik', 24000, 7, NULL, NULL, NULL, 0),
 (10, 'Stanislav', 'Janovič', 'technik', 22000, 7, NULL, NULL, NULL, 0),
 (11, 'Milan', 'Steiner', 'mistr', 29000, 7, NULL, NULL, NULL, 0),
-(14, 'Jan', 'Volhejn', 'pracovnik', 0, NULL, 'Admin', '$2y$10$TXegcXgiRZcFAnToKmiE6uDbCgO2CSmLp/iOrINP0cBwZ.lPqw9vG', 'u97YmL1uskOaftB0A9zsTd2gUG1TwKoLBDnCiVFnYGMvoZBFYHhVqiqDpk5K', 1),
+(14, 'Jan', 'Volhejn', 'pracovnik', 0, 1, 'Admin', '$2y$10$TXegcXgiRZcFAnToKmiE6uDbCgO2CSmLp/iOrINP0cBwZ.lPqw9vG', 'uWBwAINszvW4XkHQg8vBDcZQTn3ltEEew1o9Y3iGK5E7sTnEW8FQsNwyJ4xZ', 1),
 (15, 'Pardubický', 'Kraťas', 'Soutěžící', 10000, NULL, 'pardubicky-kratas', '$2y$10$TXegcXgiRZcFAnToKmiE6uDbCgO2CSmLp/iOrINP0cBwZ.lPqw9vG', NULL, 0),
 (16, 'Pardubický', 'Kraťas', NULL, 0, NULL, 'pardubicky-kratas1', '$2y$10$TXegcXgiRZcFAnToKmiE6uDbCgO2CSmLp/iOrINP0cBwZ.lPqw9vG', NULL, 0),
-(17, 'Pardubický kraťas', 'Volhejn', 'pracovnik', 0, NULL, NULL, NULL, NULL, 0);
+(17, 'Pardubický kraťas', 'Volhejn', 'pracovnik', 0, NULL, NULL, NULL, NULL, 0),
+(18, 'Testovací', 'Uživatel', 'návštěvník', 0, NULL, 'test-user', '$2y$10$z3eHSlzJTE9yqtA8cZg.8.h.FirGr1L68LRxj1glU.1.AO1RMKPIe', NULL, 0),
+(22, 'x', 'z', 'pracovnik', 0, 5, NULL, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -115,7 +117,6 @@ INSERT INTO `key` (`key_id`, `employee`, `room`) VALUES
 (34, 11, 6),
 (5, 11, 7),
 (56, 11, 11),
-(57, 14, 11),
 (58, 17, 1),
 (59, 17, 6),
 (60, 17, 7),
@@ -184,13 +185,13 @@ ALTER TABLE `room`
 -- AUTO_INCREMENT pro tabulku `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT pro tabulku `key`
 --
 ALTER TABLE `key`
-  MODIFY `key_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `key_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT pro tabulku `room`
