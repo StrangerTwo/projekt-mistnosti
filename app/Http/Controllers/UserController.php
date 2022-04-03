@@ -81,7 +81,7 @@ class UserController extends Controller
             'job' => $request->get('job'),
             'wage' => $request->get('wage'),
             'login' => $request->get('login'),
-            'password' => $request->get('password'),
+            'password' => Hash::make($request->get('password'))
         ]);
         $employee->room = $request->get('room');
         $employee->save();
