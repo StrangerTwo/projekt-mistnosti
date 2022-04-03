@@ -1,0 +1,21 @@
+{
+    "Home": "Domů",
+    "Login": "Přihlášení",
+    "Register": "Registrace",
+    "Name": "Jméno",
+    "Surname": "Příjmení",
+    "Job": "Pozice",
+    "Wage": "Příjem",
+    "Room": "Místnost",
+    "Authentication": "Přihlašování",
+    "Password": "Heslo",
+    "Repeat Password": "Heslo znovu",
+    "Admin": "Admin",
+    "Save": "Uložit",
+    "Rooms": "Místnosti",
+    "Employees": "Zaměstnanci",
+    "Number": "Číslo",
+    "Phone": "Telefon",
+    "Actions": "Operace",
+    "Keys": "Klíče"
+}

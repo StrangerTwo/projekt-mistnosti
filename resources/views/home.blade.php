@@ -28,7 +28,7 @@
                 <div class="form-group row">
                     {{ Form::label('name', __('Name'), array('class' => 'col-sm-2 col-form-label')) }}
                     <div class="col-sm-10">
-                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $employee->name) }}" required autofocus @if(!$employee->admin) disabled @endif>
+                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $employee->name) }}" required autofocus @if(!$employee->admin) readonly @endif>
 
                         @error('name')
                             <span class="invalid-feedback" role="alert">
@@ -40,7 +40,7 @@
                 <div class="form-group row">
                     {{ Form::label('surname', __('Surname'), array('class' => 'col-sm-2 col-form-label')) }}
                     <div class="col-sm-10">
-                        <input id="surname" type="text" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname', $employee->surname) }}" required @if(!$employee->admin) disabled @endif>
+                        <input id="surname" type="text" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname', $employee->surname) }}" required @if(!$employee->admin) readonly @endif>
 
                         @error('surname')
                             <span class="invalid-feedback" role="alert">
@@ -52,7 +52,7 @@
                 <div class="form-group row">
                     {{ Form::label('job', __('Job'), array('class' => 'col-sm-2 col-form-label')) }}
                     <div class="col-sm-10">
-                        <input id="job" type="text" class="form-control @error('job') is-invalid @enderror" name="job" value="{{ old('job', $employee->job) }}" @if(!$employee->admin) disabled @endif>
+                        <input id="job" type="text" class="form-control @error('job') is-invalid @enderror" name="job" value="{{ old('job', $employee->job) }}" @if(!$employee->admin) readonly @endif>
 
                         @error('job')
                             <span class="invalid-feedback" role="alert">
@@ -64,7 +64,7 @@
                 <div class="form-group row">
                     {{ Form::label('wage', __('Wage'), array('class' => 'col-sm-2 col-form-label')) }}
                     <div class="col-sm-10">
-                        <input id="wage" type="number" class="form-control @error('wage') is-invalid @enderror" name="wage" value="{{ old('wage', $employee->wage) }}" @if(!$employee->admin) disabled @endif>
+                        <input id="wage" type="number" class="form-control @error('wage') is-invalid @enderror" name="wage" value="{{ old('wage', $employee->wage) }}" @if(!$employee->admin) readonly @endif>
 
                         @error('wage')
                             <span class="invalid-feedback" role="alert">
@@ -77,7 +77,7 @@
                     {{ Form::label('room', __('Room'), array('class' => 'col-sm-2 col-form-label')) }}
                     <div class="col-sm-10">
                         {{-- {{ Form::select('room',  $rooms, null, ['class' => 'form-control']) }} --}}
-                        {{ Form::select('room', [null=>''] + $rooms, null, ['class' => "form-control " . ($errors->has('room') ? 'is-invalid' : ''), 'disabled' => !$employee->admin]) }}
+                        {{ Form::select('room', [null=>''] + $rooms, null, ['class' => "form-control " . ($errors->has('room') ? 'is-invalid' : ''), 'readonly' => !$employee->admin]) }}
                         @error('room')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -89,7 +89,7 @@
                 <div class="form-group row">
                     {{ Form::label('login', __('Login'), array('class' => 'col-sm-3 col-form-label')) }}
                     <div class="col-sm-9">
-                        <input id="login" type="text" class="form-control @error('login') is-invalid @enderror" name="login" value="{{ old('login', $employee->login) }}" autocomplete="off" @if($employee->login) disabled @endif>
+                        <input id="login" type="text" class="form-control @error('login') is-invalid @enderror" name="login" value="{{ old('login', $employee->login) }}" autocomplete="off" @if($employee->login) readonly @endif>
 
                         @error('login')
                             <span class="invalid-feedback" role="alert">
@@ -136,6 +136,12 @@
                         </div>
                     </div>
                 @endif
+                <legend>{{ __('Keys') }}</legend>
+                <ul>
+                    @foreach ($employee->keys as $key)
+                        <li><a href="{{ route('room.show', $key->room_id) }}">{{ $key->name }}</a></li>
+                    @endforeach
+                </ul>
                 <button type="submit" class="btn btn-primary d-block float-right">{{ __('Save') }}</button>
             {{ Form::close() }}
         </div>

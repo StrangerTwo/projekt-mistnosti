@@ -7,6 +7,7 @@ use App\Room;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -81,7 +82,7 @@ class UserController extends Controller
             'wage' => $request->get('wage'),
             'room' => $request->get('room'),
             'login' => $request->get('login'),
-            'password' => $request->get('login'),
+            'password' => $request->get('password'),
         ]);
         $employee->save();
 
@@ -152,12 +153,12 @@ class UserController extends Controller
         $request->validate([
             'login' => $request->get('login') ? ['string', 'max:60', "unique:employee,login,$employee->employee_id,employee_id", 'required_with:password'] : [],
             'password' => $request->get('password') ? ['string', 'min:8', 'confirmed'] : [],
-            'keys' => ['required', 'array', 'exists:room,room_id']
+            'keys' => ['array', 'exists:room,room_id']
         ]);
 
         if ($request->get('login') && $request->get('password')) {
             $employee->login = $request->get('login');
-            $employee->password = $request->get('password');
+            $employee->password = Hash::make($request->get('password'));
         }
 
         if ($user->admin) {
@@ -181,14 +182,16 @@ class UserController extends Controller
         }
 
         Key::where('employee', $id)->delete();
-        $keys = [];
-        foreach ($request->get('keys') as $key) {
-            array_push($keys, [
-                'employee' => $employee->employee_id,
-                'room' => $key
-            ]);
+        if ($request->get('keys')) {
+            $keys = [];
+            foreach ($request->get('keys') as $key) {
+                array_push($keys, [
+                    'employee' => $employee->employee_id,
+                    'room' => $key
+                ]);
+            }
+            Key::insert($keys);
         }
-        Key::insert($keys);
 
         $employee->save();
 

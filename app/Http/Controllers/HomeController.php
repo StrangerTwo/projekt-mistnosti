@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Room;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,14 +26,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $employee = Auth::user();
+        $employee = User::find(Auth::id());
         
         $rooms = [];
         foreach (Room::all() as $room) {
             $rooms[$room->room_id] = $room->name;
         }
         
-
+        $employee->keys = $employee->keys()->all();
 
         return view('home', [
             'employee' => $employee,
