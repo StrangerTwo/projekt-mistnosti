@@ -1,10 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title' => __('New') . " " . __('Employee')])
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h2 class="mb-4">{{ __('New Employee')}}</h2>
+            <h2 class="mb-4">{{ __('New')}} {{ __('Employee') }}</h2>
             
             {{ Form::open(array('route' => array('employee.store'), 'method' => 'post')) }}
                 <div class="form-group row">

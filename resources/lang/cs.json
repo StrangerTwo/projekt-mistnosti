@@ -7,6 +7,7 @@
     "Job": "Pozice",
     "Wage": "Příjem",
     "Room": "Místnost",
+    "Employee": "Zaměstnanec",
     "Authentication": "Přihlašování",
     "Password": "Heslo",
     "Repeat Password": "Heslo znovu",
@@ -19,5 +20,7 @@
     "Actions": "Operace",
     "Keys": "Klíče",
     "Yes": "Ano",
-    "No": "Ne"
+    "No": "Ne",
+    "Employees with key": "Zaměstnanci s klíčem",
+    "New": "Nový"
 }

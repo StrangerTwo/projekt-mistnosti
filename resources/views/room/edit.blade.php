@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title' => $room->name])
 
 @section('content')
 <div class="container">

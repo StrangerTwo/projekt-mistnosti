@@ -18,10 +18,6 @@ class RoomController extends Controller
     {
         $rooms = Room::all();
 
-        foreach ($rooms as $room) {
-            $room->users = $room->users();
-        }
-
         return view('room.index', [
             'rooms' => $rooms,
             'user' => Auth::user()
@@ -82,9 +78,14 @@ class RoomController extends Controller
      */
     public function show($id)
     {
+        $user = Auth::user();
+
         $room = Room::find($id);
+        $room->employees = $room->employees();
+        $room->key_employees = $room->key_employees()->all();
 
         return view('room.show', [
+            'user' => $user,
             'room' => $room,
         ]);
     }
@@ -153,7 +154,7 @@ class RoomController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->admin) return redirect()->back();
+        if (!$user->admin) return redirect(route('room.index'));
 
         $room = Room::find($id);
         if(!$room) return redirect(route('room.index'));
@@ -162,7 +163,7 @@ class RoomController extends Controller
             $room->delete();
         } catch (\Throwable $th) {
             if ($th instanceof \Illuminate\Database\QueryException) {
-                return redirect()->back()->withErrors(['error' => 'Nelze smazat, dokud je k místnosti přizazen nějaký zaměstnanec']);
+                return redirect(route('room.index'))->withErrors(['error' => 'Nelze smazat, dokud je k místnosti přizazen nějaký zaměstnanec']);
             }
             throw $th;
         }

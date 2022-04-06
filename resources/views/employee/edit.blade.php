@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title' => $employee->name . " " . $employee->surname])
 
 @section('content')
 <div class="container">

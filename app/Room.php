@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Room extends Model
 {
@@ -15,9 +16,18 @@ class Room extends Model
 
     protected $primaryKey = 'room_id';
 
-    public function users()
+    public function employees()
     {
         return User::where('room', $this->room_id)->get();
         // return $this->hasMany(User::class, 'room', 'room_id');
+    }
+
+    public function key_employees()
+    {
+        return DB::table('key')
+            ->join('employee', 'employee', '=', 'employee_id')
+            ->where('key.room', '=', $this->room_id)
+            ->select('employee.*')
+            ->get();
     }
 }
