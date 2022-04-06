@@ -54,11 +54,14 @@ class RoomController extends Controller
 
         if (!$user->admin) return redirect()->back();
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'no' => ['required', 'numeric', 'unique:room'],
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['string', 'max:15'],
         ]);
+        if ($validator->fails()) {
+            return redirect(route('room.index'))->withErrors($validator);
+        }
         
         $room = new Room([
             'no' => $request->get('no'),
@@ -68,7 +71,7 @@ class RoomController extends Controller
 
         $room->save();
 
-        return redirect(route('room.show', $room->id));
+        return redirect(route('room.show', $room->room_id));
     }
 
     /**
@@ -122,11 +125,14 @@ class RoomController extends Controller
 
         if (!$room) return redirect(route('room.index'));
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'no' => ['required', 'numeric', "unique:room,no,$room->room_id,room_id"],
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['string', 'max:15'],
         ]);
+        if ($validator->fails()) {
+            return redirect(route('room.edit', $id))->withErrors($validator);
+        }
 
         $room->update([
             'no' => $request->get('no'),
@@ -134,7 +140,7 @@ class RoomController extends Controller
             'phone' => $request->get('phone'),
         ]);
 
-        return redirect()->back();
+        return redirect(route('room.show', $id));
     }
 
     /**

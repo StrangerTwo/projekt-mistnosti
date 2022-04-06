@@ -42,6 +42,8 @@
             <dl class="row my-5">
                 <dt class="col-sm-3">{{ __('Login') }}</dt>
                 <dd class="col-sm-9">{{ $employee->login }}</dd>
+                <dt class="col-sm-3">{{ __('Admin') }}</dt>
+                <dd class="col-sm-9">{{ $employee->admin ? __('Yes') : __('No') }}</dd>
             </dl>
             <h3>{{ __('Keys') }}</h3>
             <ul>

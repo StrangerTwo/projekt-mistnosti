@@ -107,7 +107,7 @@
                 <div class="form-group row">
                     {{ Form::label('admin', __('Admin'), array('class' => 'col-sm-3 col-form-label')) }}
                     <div class="col-sm-9">
-                        <input id="admin" type="checkbox" class="form-control @error('admin') is-invalid @enderror" name="admin" {{ old('admin') ? 'checked' : '' }} >
+                        <input id="admin" type="checkbox" class="form-control @error('admin') is-invalid @enderror" name="admin" {{ old('admin', $employee->admin) ? 'checked' : '' }} >
 
                         @error('admin')
                             <span class="invalid-feedback" role="alert">

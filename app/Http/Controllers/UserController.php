@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -65,7 +66,7 @@ class UserController extends Controller
 
         if (!$user->admin) return redirect()->back();
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['required', 'string', 'max:255'],
             'job' => ['string', 'max:255'],
@@ -74,6 +75,9 @@ class UserController extends Controller
             'login' => $request->get('login') ? ['string', 'max:60', "unique:employee,login", 'required_with:password'] : [],
             'password' => $request->get('password') ? ['string', 'min:8', 'confirmed'] : [],
         ]);
+        if ($validator->fails()) {
+            return redirect(route('employee.index'))->withErrors($validator);
+        }
 
         $employee = new User([
             'name' => $request->get('name'),
@@ -81,7 +85,8 @@ class UserController extends Controller
             'job' => $request->get('job'),
             'wage' => $request->get('wage'),
             'login' => $request->get('login'),
-            'password' => Hash::make($request->get('password'))
+            'password' => Hash::make($request->get('password')),
+            'admin' => $request->get('admin'),
         ]);
         $employee->room = $request->get('room');
         $employee->save();
@@ -150,11 +155,14 @@ class UserController extends Controller
 
         if (!$employee || !$user->admin && $employee->employee_id != $user->employee_id) return redirect()->back();
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'login' => $request->get('login') ? ['string', 'max:60', "unique:employee,login,$employee->employee_id,employee_id", 'required_with:password'] : [],
             'password' => $request->get('password') ? ['string', 'min:8', 'confirmed'] : [],
             'keys' => ['array', 'exists:room,room_id']
         ]);
+        if ($validator->fails()) {
+            return redirect(route('employee.edit', $id))->withErrors($validator);
+        }
 
         if ($request->get('login') && $request->get('password')) {
             if ($request->get('login') == "test-user") return redirect(route('home'))->withErrors(['msg' => 'Heslo testovacího uživatele nelze změnit -_-']);
@@ -163,13 +171,16 @@ class UserController extends Controller
         }
 
         if ($user->admin) {
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'max:255'],
                 'surname' => ['required', 'string', 'max:255'],
                 'job' => ['string', 'max:255'],
                 'wage' => ['numeric', 'digits_between:1,11'],
                 'room' => $request->get('room') ? ['exists:room,room_id'] : [],
             ]);
+            if ($validator->fails()) {
+                return redirect(route('employee.edit', $id))->withErrors($validator);
+            }
 
             $employee->name = $request->get('name');
             $employee->surname = $request->get('surname');

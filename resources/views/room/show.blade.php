@@ -12,7 +12,16 @@
                     </div>
                 @endforeach
             @endif
-            
+            <dl class="row my-5">
+                <dt class="col-sm-3">{{ __('Name') }}</dt>
+                <dd class="col-sm-9">{{ $room->name }}</dd>
+                
+                <dt class="col-sm-3">{{ __('Number') }}</dt>
+                <dd class="col-sm-9">{{ $room->no }}</dd>
+                
+                <dt class="col-sm-3">{{ __('Phone') }}</dt>
+                <dd class="col-sm-9">{{ $room->phone }}</dd>
+            </dl>
         </div>
     </div>
 </div>
