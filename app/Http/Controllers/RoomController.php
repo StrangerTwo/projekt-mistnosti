@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Key;
 use App\Room;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -158,16 +160,13 @@ class RoomController extends Controller
 
         $room = Room::find($id);
         if(!$room) return redirect(route('room.index'));
-        
-        try {
-            $room->delete();
-        } catch (\Throwable $th) {
-            if ($th instanceof \Illuminate\Database\QueryException) {
-                return redirect(route('room.index'))->withErrors(['error' => 'Nelze smazat, dokud je k místnosti přizazen nějaký zaměstnanec']);
-            }
-            throw $th;
+
+        if (User::where('room', '=', $id)->count() <= 0) {
+            return redirect(route('room.index'))->withErrors(['error' => 'Nelze smazat, dokud je k místnosti přizazen nějaký zaměstnanec']);
         }
         
+        Key::where('room', $id)->delete();
+        $room->delete();
 
         return redirect(route('room.index'));
     }
