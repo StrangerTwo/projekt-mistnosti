@@ -161,7 +161,7 @@ class RoomController extends Controller
         $room = Room::find($id);
         if(!$room) return redirect(route('room.index'));
 
-        if (User::where('room', '=', $id)->count() <= 0) {
+        if (User::where('room', '=', $id)->count() > 0) {
             return redirect(route('room.index'))->withErrors(['error' => 'Nelze smazat, dokud je k místnosti přizazen nějaký zaměstnanec']);
         }
         
